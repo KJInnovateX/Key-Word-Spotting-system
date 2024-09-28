@@ -10,6 +10,7 @@ def create_app():
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+    # Import and initialize routes
     from app.routes import init_routes
     init_routes(app)
 
