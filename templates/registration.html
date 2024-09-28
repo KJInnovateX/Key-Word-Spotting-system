@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIH 2024</title>
+    <style>
+        :root {
+    --background-color: #1e1e2f;
+    --background-color-light: #f1f1f1;
+    --primary-text-color: #e0e0e0;
+    --secondary-text-color: #b0b0b0;
+    --card-background-color: #2a2a3d;
+    --highlight-green: #7ac400;
+    --hover-green: #7ac400;
+    --shadow-dark: rgba(0, 0, 0, 0.4);
+    --shadow-hover: 0px 0px 25px var(--highlight-green);
+    --transition-speed: 0.3s;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--primary-text-color);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    text-align: center;
+}
+
+.heading {
+    color: var(--highlight-green);
+    font-size: 32px;
+    margin-bottom: 20px;
+    text-shadow: 0 4px 8px var(--shadow-dark);
+}
+
+.form-container {
+    background-color: var(--card-background-color);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow-dark);
+    width: 100%;
+    max-width: 360px;
+    margin: auto;
+    transition: box-shadow var(--transition-speed), transform var(--transition-speed);
+}
+
+.form-container:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-5px);
+}
+
+.form-container h2 {
+    color: var(--highlight-green);
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-size: 16px;
+    color: var(--secondary-text-color);
+    margin-bottom: 8px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--background-color-light);
+    border-radius: 8px;
+    background-color: var(--background-color-light);
+    color: var(--secondary-text-color);
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+input:focus {
+    border-color: var(--highlight-green);
+    box-shadow: 0 0 8px var(--highlight-green);
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--highlight-green);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color var(--transition-speed), transform var(--transition-speed);
+}
+
+button:hover {
+    background-color: var(--hover-green);
+    transform: scale(1.02);
+}
+
+.toggle-link {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.toggle-link a {
+    color: var(--highlight-green);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.toggle-link a:hover {
+    text-decoration: underline;
+}
+
+.hidden {
+    display: none;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="heading">Few Shot Language Agnostic Key Word Spotting system (FSLAKWS) for audio files.</h1>
+        <div class="form-container" id="registrationForm">
+            <h2>Register</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="uniqueID">Unique ID</label>
+                    <input type="text" id="uniqueID" placeholder="Enter unique ID" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit">Register</button>
+                <p class="toggle-link">Already have an account? <a href="#" id="switchToLogin">Login here</a></p>
+            </form>
+        </div>
+
+        <div class="form-container hidden" id="loginForm">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginID">Unique ID</label>
+                    <input type="text" id="loginID" placeholder="Enter unique ID" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+                <button type="submit">Login</button>
+                <p class="toggle-link">Don't have an account? <a href="#" id="switchToRegister">Register here</a></p>
+            </form>
+        </div>
+    </div>
+    
+
+    <script>
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const name = document.getElementById("name").value;
+    const uniqueID = document.getElementById("uniqueID").value;
+    const password = document.getElementById("password").value;
+
+    if (name && uniqueID && password) {
+        localStorage.setItem("locopilot", JSON.stringify({ name, uniqueID, password }));
+        alert("Registration Successful! Redirecting to login...");
+        toggleForms();
+    } else {
+        alert("Please fill in all fields.");
+    }
+});
+
+document.getElementById("loginForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const loginID = document.getElementById("loginID").value;
+    const loginPassword = document.getElementById("loginPassword").value;
+    
+    const locopilotData = JSON.parse(localStorage.getItem("locopilot"));
+    
+    if (locopilotData && locopilotData.uniqueID === loginID && locopilotData.password === loginPassword) {
+        alert("Login Successful! Welcome " + locopilotData.name);
+        window.location.href = "{{ url_for('index') }}";
+    } else {
+        alert("Invalid credentials. Please try again.");
+    }
+});
+
+document.getElementById("switchToLogin").addEventListener("click", function(event) {
+    event.preventDefault();
+    toggleForms();
+});
+
+document.getElementById("switchToRegister").addEventListener("click", function(event) {
+    event.preventDefault();
+    toggleForms();
+});
+
+function toggleForms() {
+    document.getElementById("registrationForm").classList.toggle("hidden");
+    document.getElementById("loginForm").classList.toggle("hidden");
+}
+    </script>
+    
+</body>
+
+</html>
